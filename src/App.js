@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Axios from 'axios';
+import Post from './Components/Post';
 import './App.css';
 
 class App extends Component {
+state={
+  posts : [""]
+}
+
+  getDataFromApi = ()=>{
+    Axios.get("http://192.168.11.118:4000/api/contohs")
+    .then(res => {
+      this.setState({
+          posts : res.data
+      })
+
+      console.log(res.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }
+
+  
+componentDidMount(){
+  this.getDataFromApi()
+}
+
+
   render() {
+    var data = this.state.posts
+  
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+     
+        <Post data={this.state.posts[0]}/>
       </div>
     );
   }
 }
-
 export default App;
